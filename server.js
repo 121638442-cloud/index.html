@@ -529,7 +529,8 @@ app.post('/api/upload', apiAuthMiddleware, upload.single('file'), (req, res) => 
 });
 
 // 获取素材列表
-app.get('/api/materials', apiAuthMiddleware, (req, res) => {
+// 获取素材列表（公开接口）
+app.get('/api/materials', (req, res) => {
   try {
     const uploadsDir = path.join(__dirname, 'uploads');
     if (!fs.existsSync(uploadsDir)) {
