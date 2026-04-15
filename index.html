@@ -557,6 +557,7 @@
       try {
         const res = await fetch(API_BASE + '/api/upload', {
           method: 'POST',
+          headers: { 'x-api-key': 'admin123456' },
           body: formData
         });
         const data = await res.json();
