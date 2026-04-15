@@ -476,7 +476,7 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     const ext = path.extname(file.originalname);
-    cb(null, uniqueSuffix + '_' + file.originalname.replace(ext, '') + ext);
+    cb(null, uniqueSuffix + ext);
   }
 });
 
