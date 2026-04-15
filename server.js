@@ -15,6 +15,11 @@ app.get('/', (req, res) => {
   res.redirect('/admin');
 });
 
+// 后台管理首页
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin', 'index.html'));
+});
+
 // 其他中间件
 app.use(cors());
 app.use(express.json());
