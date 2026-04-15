@@ -165,7 +165,7 @@ app.get('/api/status', (req, res) => {
 });
 
 // 获取轮播图列表（公开接口）
-app.get('/api/banners', apiAuthMiddleware, (req, res) => {
+app.get('/api/banners', (req, res) => {
   try {
     const banners = readJson(bannersFile);
     const bannersWithFixedUrl = banners.map(b => {
@@ -229,7 +229,7 @@ app.put('/api/banners/:id', apiAuthMiddleware, (req, res) => {
 });
 
 // 获取产品列表（公开接口）
-app.get('/api/products', apiAuthMiddleware, (req, res) => {
+app.get('/api/products', (req, res) => {
   try {
     const products = readJson(productsFile);
     const productsWithFixedUrl = products.map(p => {
@@ -243,8 +243,8 @@ app.get('/api/products', apiAuthMiddleware, (req, res) => {
   }
 });
 
-// 获取单个产品
-app.get('/api/products/:id', apiAuthMiddleware, (req, res) => {
+// 获取单个产品（公开接口）
+app.get('/api/products/:id', (req, res) => {
   try {
     const products = readJson(productsFile);
     const product = products.find(p => p.id === parseInt(req.params.id));
