@@ -2,9 +2,17 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 
 const app = express();
 const PORT = 3000;
+const HTTPS_PORT = 3001;
+
+// 读取SSL证书
+const sslOptions = {
+  key: fs.readFileSync(path.join(__dirname, 'ssl', 'lancangsuo.ltd.key')),
+  cert: fs.readFileSync(path.join(__dirname, 'ssl', 'lancangsuo.ltd.pem'))
+};
 
 // 静态文件服务 - 放在最前面
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -570,4 +578,10 @@ app.use((err, req, res, next) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`后端服务已启动: http://0.0.0.0:${PORT}`);
   console.log(`后台管理系统: http://0.0.0.0:${PORT}/admin`);
+});
+
+// 启动HTTPS服务
+https.createServer(sslOptions, app).listen(HTTPS_PORT, '0.0.0.0', () => {
+  console.log(`HTTPS服务已启动: https://0.0.0.0:${HTTPS_PORT}`);
+  console.log(`后台管理系统(HTTPS): https://0.0.0.0:${HTTPS_PORT}/admin`);
 });
