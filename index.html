@@ -368,7 +368,9 @@
     
     async function loadProducts() {
       try {
-        const res = await fetch(API_BASE + '/api/products');
+        const res = await fetch(API_BASE + '/api/products', {
+          headers: { 'x-api-key': 'admin123456' }
+        });
         const data = await res.json();
         if (data.success) {
           const tbody = document.getElementById('productList');
@@ -398,7 +400,9 @@
     
     async function loadBanners() {
       try {
-        const res = await fetch(API_BASE + '/api/banners');
+        const res = await fetch(API_BASE + '/api/banners', {
+          headers: { 'x-api-key': 'admin123456' }
+        });
         const data = await res.json();
         if (data.success) {
           const tbody = document.getElementById('bannerList');
@@ -648,7 +652,9 @@
     
     async function loadNotice() {
       try {
-        const res = await fetch(API_BASE + '/api/notice');
+        const res = await fetch(API_BASE + '/api/notice', {
+          headers: { 'x-api-key': 'admin123456' }
+        });
         const data = await res.json();
         if (data.success && data.data) {
           document.getElementById('noticeText').value = data.data.text || '';
