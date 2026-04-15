@@ -69,7 +69,7 @@ app.use((req, res, next) => {
 
 // API 权限控制中间件
 function apiAuthMiddleware(req, res, next) {
-  const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://lancangsuo.ltd:3000'];
+  const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://lancangsuo.ltd:3000', 'https://lancangsuo.ltd:3001'];
   const origin = req.headers.origin;
   
   if (allowedOrigins.includes(origin)) {
@@ -104,10 +104,14 @@ function getImageUrl(req, imagePath) {
   let baseUrl = 'http://localhost:3000';
   
   if (origin.includes('lancangsuo.ltd') || origin.includes('39.106.21.24')) {
-    baseUrl = 'http://lancangsuo.ltd:3000';
+    if (origin.includes('https')) {
+      baseUrl = 'https://lancangsuo.ltd:3001';
+    } else {
+      baseUrl = 'http://lancangsuo.ltd:3000';
+    }
   }
   else if (!ip.includes('127.0.0.1') && !ip.includes('::1') && !ip.includes('localhost')) {
-    baseUrl = 'http://lancangsuo.ltd:3000';
+    baseUrl = 'https://lancangsuo.ltd:3001';
   }
   
   const fileName = imagePath.split('/').pop();
