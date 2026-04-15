@@ -525,11 +525,14 @@
     }
     
     function copyImageUrl(url) {
-      navigator.clipboard.writeText(window.location.origin + url).then(() => {
-        alert('图片URL已复制到剪贴板！');
-      }).catch(() => {
-        alert('复制失败，请手动复制');
-      });
+      const fullUrl = window.location.origin + url;
+      const input = document.createElement('input');
+      input.value = fullUrl;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      alert('图片URL已复制到剪贴板！');
     }
     
     async function deleteMaterial(filename) {
