@@ -214,6 +214,11 @@
         <div class="tab-content" id="tab-banner-form">
           <div class="card">
             <h3 id="bannerFormTitle">添加轮播图</h3>
+            <div class="upload-area" onclick="document.getElementById('bannerFileInput').click()">
+              <p>点击上传轮播图图片</p>
+              <p style="color: #999; font-size: 12px;">支持 jpg、png、gif 格式</p>
+              <input type="file" id="bannerFileInput" accept="image/*" onchange="uploadBannerImage(event)">
+            </div>
             <form onsubmit="saveBanner(event)">
               <input type="hidden" id="bannerId">
               <div class="form-group">
@@ -572,6 +577,38 @@
         if (data.success) {
           alert('上传成功！');
           loadMaterials();
+        } else {
+          alert('上传失败：' + data.message);
+        }
+      } catch (e) {
+        alert('上传失败');
+      }
+      event.target.value = '';
+    }
+    
+    async function uploadBannerImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      try {
+        const res = await fetch(API_BASE + '/api/upload', {
+          method: 'POST',
+          headers: { 'x-api-key': 'admin123456' },
+          body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+          const url = data.data.url;
+          document.getElementById('bannerImage').value = url;
+          document.getElementById('bannerImageList').innerHTML = `
+            <div class="image-item selected">
+              <img src="${url}" onerror="this.src='https://via.placeholder.com/100'">
+              <div class="check">✓</div>
+            </div>
+          `;
         } else {
           alert('上传失败：' + data.message);
         }
