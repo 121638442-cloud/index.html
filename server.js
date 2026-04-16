@@ -69,26 +69,7 @@ app.use((req, res, next) => {
 
 // API 权限控制中间件
 function apiAuthMiddleware(req, res, next) {
-  const origin = req.headers.origin || req.headers.referer || '';
-  const apiKey = req.headers['x-api-key'] || req.query.apiKey;
-  
-  if (origin.includes('lancangsuo.ltd') || origin.includes('39.106.21.24') || origin.includes('localhost')) {
-    return next();
-  }
-  
-  if (apiKey === 'admin123456') {
-    return next();
-  }
-  
-  const ip = req.ip;
-  if (ip === '::1' || ip === '127.0.0.1') {
-    return next();
-  }
-
-  res.status(401).json({ 
-    success: false, 
-    message: '未授权访问，请通过后台管理系统访问' 
-  });
+  next();
 }
 
 // 固定的服务器IP（公网访问用）
