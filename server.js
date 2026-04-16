@@ -25,7 +25,29 @@ app.get('/', (req, res) => {
 
 // 后台管理首页
 app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, 'admin', 'index.html'));
+  const indexPath = path.join(__dirname, 'admin', 'index.html');
+  let html = fs.readFileSync(indexPath, 'utf8');
+  
+  const protocol = req.protocol;
+  const host = req.get('host');
+  const apiBase = protocol + '://' + host;
+  
+  html = html.replace(/const API_BASE = '[^']*';/, "const API_BASE = '" + apiBase + "';");
+  
+  res.send(html);
+});
+
+app.get('/admin/', (req, res) => {
+  const indexPath = path.join(__dirname, 'admin', 'index.html');
+  let html = fs.readFileSync(indexPath, 'utf8');
+  
+  const protocol = req.protocol;
+  const host = req.get('host');
+  const apiBase = protocol + '://' + host;
+  
+  html = html.replace(/const API_BASE = '[^']*';/, "const API_BASE = '" + apiBase + "';");
+  
+  res.send(html);
 });
 
 // 其他中间件
@@ -84,14 +106,10 @@ function getImageUrl(req, imagePath) {
   let baseUrl = 'http://localhost:3000';
   
   if (origin.includes('lancangsuo.ltd') || origin.includes('39.106.21.24')) {
-    if (origin.includes('https')) {
-      baseUrl = 'https://lancangsuo.ltd:3001';
-    } else {
-      baseUrl = 'http://lancangsuo.ltd:3000';
-    }
+    baseUrl = 'http://39.106.21.24:3000';
   }
   else if (!ip.includes('127.0.0.1') && !ip.includes('::1') && !ip.includes('localhost')) {
-    baseUrl = 'https://lancangsuo.ltd:3001';
+    baseUrl = 'http://39.106.21.24:3000';
   }
   
   const fileName = imagePath.split('/').pop();
@@ -474,17 +492,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ 
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|webp/;
-    const ext = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mime = file.mimetype.startsWith('image/');
-    if (ext || mime) {
-      cb(null, true);
-    } else {
-      cb(new Error('只能上传图片文件'));
-    }
-  }
+  limits: { fileSize: 5 * 1024 * 1024 }
 });
 
 app.post('/api/upload', upload.single('file'), (req, res) => {
