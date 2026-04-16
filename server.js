@@ -506,7 +506,7 @@ const upload = multer({
   }
 });
 
-app.post('/api/upload', apiAuthMiddleware, upload.single('file'), (req, res) => {
+app.post('/api/upload', upload.single('file'), (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ success: false, message: '没有上传文件' });
